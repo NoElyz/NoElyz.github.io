@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Head tag -->
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Title -->
+  
+  <title>为品胜云座易充编译LEDE固件 - ZatBlog</title>
+
+  <!--Favicon-->
+  <link rel="icon" href="favicon/favicon.ico">
+
+  <!--Description-->
+  
+      <meta name="description" content="AR9331在低端路由器和150M速率2.4G旅行路由器上很常见，比如Arduino Yún以及TP-Link WR703N等均使用了这款SoC。品胜的云座易充同样使用了这颗SoC，以及64MHz DDR2内存和8MB的Nor Flash。硬件上和其他AR9331产品相似，提供了一个USB口和SD读">
+  
+
+  <!--Author-->
+  
+      <meta name="author" content="Zyleon">
+  
+
+  <!-- Pure CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Open+Sans:300,800" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+
+  <body>
+  	<div class="container-fluid navbar-container m-sm-5">
+      <!-- Header -->
+      <nav class="navbar navbar-toggleable-sm navbar-light px-1 py-3 my-3 mb-sm-5">
+  <a class="navbar-brand ml-2" href="/">ZatBlog</a>
+  <button class="navbar-toggler navbar-toggler-right py-2" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse text-center" id="navbarCollapse">
+    <ul class="navbar-nav ml-auto my-auto">
+      
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+      
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/noelyz">Github</a>
+        </li>
+      
+    </ul>
+    <hr class="hidden-md-up" />
+  </div>
+</nav>
+
+
+  		<div class="row">
+  			<div class="col-12 mb-4">
+  <img class="img-fluid project-img" src="/content/images/photo_2017-09-02_01-25-03.jpg" alt="为品胜云座易充编译LEDE固件">
+</div>
+<div class="col-lg-4 col-12 pt-3 px-4 pr-lg-5">
+  <h1>为品胜云座易充编译LEDE固件</h1>
+</div>
+<div class="col-lg-8 col-12 pt-lg-3 mb-4 pl-lg-5 px-lg-0 px-4 portfolio-content">
+  <p>AR9331在低端路由器和150M速率2.4G旅行路由器上很常见，比如Arduino Yún以及TP-Link WR703N等均使用了这款SoC。品胜的云座易充同样使用了这颗SoC，以及64MHz DDR2内存和8MB的Nor Flash。硬件上和其他AR9331产品相似，提供了一个USB口和SD读卡器（实际上通过一个高速开关切换，两者只能选其一，SD读卡器支持比较麻烦所以放弃了）。入手价格相对较低，相比WR703N内存和闪存容量也翻倍，串口焊盘较大，相对来说也更适合DIY使用。</p>
+<p>我买了几个用来玩，但是实际使用时发现还是有下列问题，可能和直接使用其他类似硬件的固件有关：</p>
+<ol>
+<li>使用了错误的GPIO设置导致reset和WiFi LED不能正常工作</li>
+<li>闪存只用了4MB的配置，有些浪费</li>
+</ol>
+<p>于是我决定自己编译LEDE固件，并且期望可以达到下列目标</p>
+<ol>
+<li>使用正确的GPIO设置，让reset和WiFi LED工作恢复正常 </li>
+<li>使用8M的闪存配置</li>
+<li>增加Nodejs的支持</li>
+<li>刷入Hackpascal的<a href="https://breed.hackpascal.net/breed-ar9331-pisen.bin" target="_blank" rel="external">breed</a> bootloader</li>
+</ol>
+<p>为了方便我使用了WR703N的配置文件稍加修改，建议源代码整个文件夹备份一份以备它用，具体LEDE的编译流程请参考<a href="https://lede-project.org/docs/guide-developer/quickstart-build-images" target="_blank" rel="external">官方说明</a>。</p>
+<h2 id="找出GPIO配置"><a href="#找出GPIO配置" class="headerlink" title="找出GPIO配置"></a>找出GPIO配置</h2><p>首先接通电源，打开开关（蓝色WiFi指示灯亮起）等待进入默认固件，然后连接Pisen开头的AP或者接上网线。</p>
+<p>浏览器进入<a href="192.168.222.254">192.168.222.254</a>并刷入<a href="https://downloads.lede-project.org/releases/17.01.2/targets/ar71xx/generic/lede-17.01.2-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin" target="_blank" rel="external">WR703N的LEDE固件</a>。（也可以选择使用telnet帐号root密码ifconfig进入来找出GPIO配置以及备份原固件等，或者自己编译好之后直接刷入）</p>
+<p>参考<a href="https://wiki.openwrt.org/doc/hardware/port.gpio" target="_blank" rel="external">openwrt地官方文档</a>找出GPIO设置，事实上使用了正确的GPIO设置时，需要找出的GPIO反而是锁上的，刷入WR703N固件后使用了错误的GPIO配置反而可以方便检测。最后确认LED_PIN是GPIO0（并且是高电平点亮），RESET_PIN是GPIO12。</p>
+<p>修改<code>(source)/target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr703n.c</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#define TL_WR703N_GPIO_LED_SYSTEM   0</div><div class="line">#define TL_WR703N_GPIO_BTN_RESET    12</div></pre></td></tr></table></figure>
+<p>以及同文件<code>gpio_led tl_wr703n_leds_gpio[]</code>部分中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">.active_low = 0,</div></pre></td></tr></table></figure>
+<h2 id="更改为8M的闪存配置"><a href="#更改为8M的闪存配置" class="headerlink" title="更改为8M的闪存配置"></a>更改为8M的闪存配置</h2><p>打开<code>(source)/target/linux/ar71xx/image/tp-link.mk</code>，找到<code>define Device/tl-wr703n-v1</code>。</p>
+<p>将<code>$(Device/tplink-4mlzma)</code>中的<code>4mlzma</code>改成<code>8mlzma</code>就可以支持8MB固件编译（16MB同理），以解决选择的包太多无法打包到4MB固件内的问题。</p>
+<h2 id="生成编译选项以及增加Nodejs的支持"><a href="#生成编译选项以及增加Nodejs的支持" class="headerlink" title="生成编译选项以及增加Nodejs的支持"></a>生成编译选项以及增加Nodejs的支持</h2><p>使用WR703N或者大部分其他AR9331的LEDE（以及Openwrt）固件直接<code>opkg install node</code>得到的node在使用时会提示<code>Illegal Instruction</code>。经查明是因为AR9331采用的mips32Kc架构没有浮点运算支持导致。而Nodejs产生的指令依赖FPU。因而可以通过给内核增加FPU Emulator的方式解决。</p>
+<h4 id="一般设置"><a href="#一般设置" class="headerlink" title="一般设置"></a>一般设置</h4><p>这一步正好可以先配置一下编译选项，在源代码目录下<code>make menuconfig</code>稍等一会即可（终端要有足够的字符宽度，全屏即可）。</p>
+<p><code>Target System</code>和<code>Subtarget</code>应该分别是<code>Atheros AR7xxx/AR9xxx</code>和<code>Generic</code>，不需要变更。<code>Target Profile</code>选择<code>TP-LINK TLWR703N v1</code>，也就是刚才编辑过的配置文件。</p>
+<p><code>Luci -&gt; Collections -&gt; luci</code><br>易用的webUI，没有也无所谓，配网络会麻烦点</p>
+<p><code>Languague -&gt; Node.js -&gt; node</code><br>建议先y选中以自动勾选所有依赖，然后m编译成包使用，这样ROM体积会小一些，之后考虑扩展到U盘中读写速度也会快一些。</p>
+<p>把node编译进固件最后会有700k不到的空间可以用，差不多足够容纳ext4方案的extroot所需组件。</p>
+<h4 id="配置FPU-Emulator支持"><a href="#配置FPU-Emulator支持" class="headerlink" title="配置FPU Emulator支持"></a>配置FPU Emulator支持</h4><p>接下来在Adavanced configuration options上按y选中并回车，进入后在Target Options上按y选中并回车，进入后在Build packages with MIPS16 instructions上按n反选。这样会选中默认是用软件FPU模拟方法。</p>
+<p>这时候选项就差不多了，选择下方Save到.config后Exit即可。</p>
+<p>下一步开启内核的FPU Emulator支持。</p>
+<p>在终端输入<code>make kernel_menuconfig</code>继续内核选项配置，这时会编译一部分的toolchain，耐心等待即可。</p>
+<p><code>Kernel type -&gt; MIPS FPU Emulator</code><br>选中按y然后Save并Exit。</p>
+<p>固件的配置文件为<code>(source)/.config</code>，而内核配置文件为<code>(source)/build_dir/target-mips_24kc_musl/linux-ar71xx_generic/linux-&lt;kernel-version&gt;/.config</code>，互相不影响。</p>
+<h2 id="解锁mtd0方便刷入bootloader"><a href="#解锁mtd0方便刷入bootloader" class="headerlink" title="解锁mtd0方便刷入bootloader"></a>解锁mtd0方便刷入bootloader</h2><p>这时候不要急着编译，因为接下来还要刷bootloader，而固件默认是不允许写u-boot分区的，所以需要解除不可写选项。</p>
+<p>找到<code>target/linux/ar71xx/files/drivers/mtd/tplinkpart.c</code>，去掉<code>parts[0].mask_flags = 0;</code>这一行，如果需要写入art分区，也可以同时去掉<code>parts[3].mask_flags = 0;</code>这一行。</p>
+<p>保存后回到根目录，可以开始编译了。</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>为了节省时间并检查出下载是不是有问题，可以先<code>make download V=s</code>。由于都是源代码包的缘故，基本不需要考虑架构，如果看到有什么包下载不下来，可以先从其他地方下载下来放到<code>dl</code>下。</p>
+<p>全部结束后<code>make -j$(nproc)</code>即可。<del>需要不少时间，可以泡个茶看书慢慢等。</del></p>
+<h2 id="刷固件"><a href="#刷固件" class="headerlink" title="刷固件"></a>刷固件</h2><h4 id="刷入新固件"><a href="#刷入新固件" class="headerlink" title="刷入新固件"></a>刷入新固件</h4><p>按照前文方法连接上云座易充后菜单里就有选项可以直接上传固件升级。上传<code>(source)/bin/targets/ar71xx/generic/lede-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin</code>等待更新重启即可。如果没有新生成factory而有其他文件一般表示所选包过多，没法打包成固件。</p>
+<h4 id="保存原始u-boot、art"><a href="#保存原始u-boot、art" class="headerlink" title="保存原始u-boot、art"></a>保存原始u-boot、art</h4><p>等路由器重启后过一阵插上网线，电脑获得地址后在终端内<code>ssh root@192.168.1.1</code>连接，使用<code>cat /proc/mtd</code>可以看到mtd的分布情况，通过<code>dd</code>备份原始u-boot和art分区到文件传回电脑保存即可。</p>
+<h4 id="刷入bootloader"><a href="#刷入bootloader" class="headerlink" title="刷入bootloader"></a>刷入bootloader</h4><p>使用scp上传bootloader到<code>/tmp</code>并刷到u-boot分区（这里一般是<code>/dev/mtd0</code>）即可。</p>
+<p>这里提供按上述设置编译并增加了extroot扩展ext4分区需要的包（fdisk除外）的固件供试用：<br><a href="/content/share/lede-ar71xx-generic-pisen-wmm003n-squashfs-factory.bin">lede-ar71xx-generic-pisen-wmm003n-squashfs-factory.bin</a><br><code>/overlay</code>分区尚有100KB剩余，足够配置无线网络以及<a href="https://lede-project.org/docs/user-guide/extroot_configuration" target="_blank" rel="external">extroot</a>。</p>
+
+</div>
+
+
+      </div>
+      
+  	</div>
+
+    <!-- After footer scripts -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+  </body>
+</html>
