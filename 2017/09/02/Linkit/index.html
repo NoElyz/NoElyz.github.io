@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Head tag -->
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Title -->
+  
+  <title>Seeedstudio Linkit Smart 7688 - ZatBlog</title>
+
+  <!--Favicon-->
+  <link rel="icon" href="favicon/favicon.ico">
+
+  <!--Description-->
+  
+      <meta name="description" content="Arduino的库非常好用，甚至于Attiny/Atmega系列MCU通过ISP烧录后就可以直接使用，整个开发流程非常短，用于简单的传感器数据收集、低分辨率屏幕的显示等都很理想。而需要稍微复杂的计算功能时，合适价格内的Arduino，以及ESP8266/32等就显得捉襟见肘。同样具有大量GPIO且性">
+  
+
+  <!--Author-->
+  
+      <meta name="author" content="Zyleon">
+  
+
+  <!-- Pure CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Open+Sans:300,800" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+
+  <body>
+  	<div class="container-fluid navbar-container m-sm-5">
+      <!-- Header -->
+      <nav class="navbar navbar-toggleable-sm navbar-light px-1 py-3 my-3 mb-sm-5">
+  <a class="navbar-brand ml-2" href="/">ZatBlog</a>
+  <button class="navbar-toggler navbar-toggler-right py-2" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse text-center" id="navbarCollapse">
+    <ul class="navbar-nav ml-auto my-auto">
+      
+        <li class="nav-item">
+          <a class="nav-link" href="/archives">Archives</a>
+        </li>
+      
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+      
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/noelyz">Github</a>
+        </li>
+      
+    </ul>
+    <hr class="hidden-md-up" />
+  </div>
+</nav>
+
+
+  		<div class="row">
+  			<div class="col-12 mb-4">
+  <img class="img-fluid project-img" src="/images/unsplash.jpg" alt="Seeedstudio Linkit Smart 7688">
+</div>
+<div class="col-lg-4 col-12 pt-3 px-4 pr-lg-5">
+  <h1>Seeedstudio Linkit Smart 7688</h1>
+</div>
+<div class="col-lg-8 col-12 pt-lg-3 mb-4 pl-lg-5 px-lg-0 px-4 portfolio-content">
+  <p>Arduino的库非常好用，甚至于Attiny/Atmega系列MCU通过ISP烧录后就可以直接使用，整个开发流程非常短，用于简单的传感器数据收集、低分辨率屏幕的显示等都很理想。而需要稍微复杂的计算功能时，合适价格内的Arduino，以及ESP8266/32等就显得捉襟见肘。同样具有大量GPIO且性能尚可的Raspberry Pi 2B/3B开发板在价格上又高出了很多，通过USB接驳的网络接口也显得不太可靠。如果只需要足够用的功能，又想要大量外围接口时，可以刷机的低端路由器似乎就是比较理想的选择了。</p>
+<h1 id="AR9331-AR9341"><a href="#AR9331-AR9341" class="headerlink" title="AR9331/AR9341"></a>AR9331/AR9341</h1><p>AR9331/AR9341基本上是最普遍的入门选择了。可供选择的成熟产品众多、功耗理想、Openwrt/LEDE支持良好、价格亲民，各类常用网络服务均有支持，性能基本上也足够使用了。</p>
+<h2 id="问题的产生"><a href="#问题的产生" class="headerlink" title="问题的产生"></a>问题的产生</h2><h3 id="不够用的USB接口"><a href="#不够用的USB接口" class="headerlink" title="不够用的USB接口"></a>不够用的USB接口</h3><p>前一阵买了大量采用此SoC的成品和主板。由于板载的Nor Flash最大只有16MB,想要塞进去的东西稍微一多基本上就陷入了不够用的状态。Openwrt/LEDE给出了<a href="https://lede-project.org/docs/user-guide/extroot_configuration" target="_blank" rel="external">Extroot的方法</a>，可以把<code>/overlay</code>分区挂载到USB设备上，这样一来AR9331唯一的USB口就被使用掉了。如果需要额外接入诸如移动硬盘、USB摄像头之类的设备就只能放弃。</p>
+<h3 id="增设USB接口"><a href="#增设USB接口" class="headerlink" title="增设USB接口"></a>增设USB接口</h3><p>想要更多的USB接口基本上只能通过增加额外的USB Hub实现。</p>
+<p>在TP-Link WR703N的各种改造中，去掉原来的USB接口接驳USB Hub模块扩展的方法被证明可行。不介意体积变大、外观丑一些的话，那么在原来的USB口外接驳Hub想必也可以达成一样的效果。</p>
+<p>难点在于一些板子上的USB本身被限电，可能还需要外接稳定的5V电源，通过GPIO控制USB供电通断，以及改造电容提升稳定性等，以防硬盘等耗电量较大的设备影响路由器本身的工作。另外，类似于WR720N这样本身USB接口可以供给2A电流且通过拨动开关选择模式的路由器，在刷入Openwrt/LEDE后如果想要保证数据线和供电两全其美的话，似乎是要改动电路或者改动GPIO设定的。</p>
+<h3 id="怎样增加UART、GPIO等外围接口"><a href="#怎样增加UART、GPIO等外围接口" class="headerlink" title="怎样增加UART、GPIO等外围接口"></a>怎样增加UART、GPIO等外围接口</h3><p>除此之外，如果想要和更多外围设备通信，那诸如UART、I2C、SPI等总线的缺乏也是一个问题。</p>
+<h3 id="增设外围接口的方案"><a href="#增设外围接口的方案" class="headerlink" title="增设外围接口的方案"></a>增设外围接口的方案</h3><h4 id="自行引出原主板上的引脚"><a href="#自行引出原主板上的引脚" class="headerlink" title="自行引出原主板上的引脚"></a>自行引出原主板上的引脚</h4><p><a href="https://wiki.openwrt.org/toh/tp-link/tl-wr703n#gpios" target="_blank" rel="external">有一些人折腾出了WR703N上的GPIO口</a>，但是实际焊接WR703N上的串口的时候感觉到焊盘实在太小，甚至于我还没来得及买热熔胶，串口线就连着焊盘一起掉了下来。如果所有的GPIO口都要焊接出来用的话，未免有点过于折腾了。</p>
+<h4 id="使用下位机MCU作为扩展"><a href="#使用下位机MCU作为扩展" class="headerlink" title="使用下位机MCU作为扩展"></a>使用下位机MCU作为扩展</h4><p>焊接串口的原因在于当时想要通过ATMEL的MCU作为桥来连接其他设备，因为之前在Attiny85上烧写Littlewire使用的印象很深刻，如果可以作为桥使用效果想必是挺好的。日后成功的实验中也证实了这一点（Attiny85接驳SSD1306控制芯片的OLED点阵屏作为串口输出显示用）。这样的做法看起来焊接工作量较少，似乎是比较合适的。</p>
+<p>因而在AR9331/AR9341上想要获得额外的GPIO口主要就有两种较为方便的选择：</p>
+<ol>
+<li>通过USB连接MCU，像使用电脑控制MCU一样。为了不占用唯一的USB接口，最好是通过额外的USB Hub。</li>
+<li>通过预留的串口连接MCU，这个也是一些项目使用的方案，比如Arduino Yún（接驳Atmega32U4）和类似的Linino One。需要自己实现MCU部分的代码，或者学习使用现成的库，比如Yún的库<a href="https://www.arduino.cc/en/Reference/YunBridgeLibrary" target="_blank" rel="external">bridge</a>。</li>
+</ol>
+<p>类似于Attiny45/85上的Littlewire，我发现一个使用电脑直接控制Atmega系列MCU的方案，<a href="http://playground.arduino.cc/Interfacing/Firmata" target="_blank" rel="external">Firmata</a>。</p>
+<h2 id="继续存在的问题"><a href="#继续存在的问题" class="headerlink" title="继续存在的问题"></a>继续存在的问题</h2><p>之前一篇文章里介绍到的品胜云座易充WMM003N在主板上就有四个连着的触点，查了下前人经验可以知道是串口。接出来连接CH340可以知道确实是ATH0口。AR9331串口工作电压也是3.3V，大部分的Atmega系列MCU在3.3V下可以使用内置的振荡器工作在8MHz。如果MCU部分使用兼容Firmata的代码，那直接接上AR9331的ATH0应该就可以使用了。但其实这样还是有一点问题，ATH0在开机时会输出dmseg信息，如果换成其他串口就看不到，继续沿用则MCU那边就要延迟启动。</p>
+<p>并且就算这样，USB口不够用的问题还是存在的，文章里介绍的WMM003N这块板上的SD读卡器和USB口通过一个开关芯片控制，只能选择其一使用，并不像预想中的已经集成了USB Hub。</p>
+<p>随后我查看了AR9331/AR9341的官方文档，引脚能给出的USB口确实就只有一个，也没有额外的SDIO可以用。GPIO的数量倒是不少，实际引出多少就看成品厂商如何考虑了。</p>
+<h2 id="其他看似合理的选择"><a href="#其他看似合理的选择" class="headerlink" title="其他看似合理的选择"></a>其他看似合理的选择</h2><p>核心板应该是外围预留最多的方案了，价格也多在50人民币以下。当然直接使用是有一定难度的，外围比较齐全的底板价格也远超核心板了。前一阵矿机流行时诞生了一大批形态各异的AR9331核心板扩展板，二手价格相当低，无奈造型实在太丑，从固件到硬件各方面也都比较麻烦。</p>
+<p>在实际量产的产品中，GL.iNet推出的各种产品就显得很特别。诸如GL AR150（AR9331）、GL AR300（AR9341），在外观上类似于WR703N，并且串口和部分GPIO均引出，以2.54mm间距插针孔的形式预留在主板上。除此之外，GL.iNet 6416差不多就是一个顶配的WR703N。除了购买渠道不确定和价格落差较大（但都比WR703N要贵不少）之外，可以说是很理想的选择了。</p>
+<p>看起来SoC本身的限制对于成品的影响还是较大的。那么有没有架构差不多又能满足需求的设备呢？</p>
+<h1 id="MT7620-MT7628-MT7688"><a href="#MT7620-MT7628-MT7688" class="headerlink" title="MT7620/MT7628/MT7688"></a>MT7620/MT7628/MT7688</h1><p>接触到这个系列最早还是因为话题产品小米路由器和Phicomm K系路由器。两者在低端产品中均使用了mips32 24KEc核心的SoC MT7620系的各种版本。就性能测试来看甚至接近高通同频率mips32 74Kc的产品（AR934X系列），并且内存闪存配置上都比较灵活，价格也很亲民。甚至于后期使用MT7628/7688系列SoC的产品有较多自带了TF卡槽和USB双接口，主板上也没有明显的USB Hub和SD读卡器芯片的痕迹，表明是直接使用了SoC自带功能。看起来这就是比较合适的选项了。</p>
+<h2 id="为什么不选路由器"><a href="#为什么不选路由器" class="headerlink" title="为什么不选路由器"></a>为什么不选路由器</h2><p>基本上市面上能买到的路由器成品在接口上多多少少都有些缺憾，像WR703N那样可以用USB供电的产品就更少了。当然同样的，GL.iNet依然提供了MT150和MT300等看上去没有缺憾的产品，但价格甚至贵过了Raspberry Pi 3B。这样一来就基本没有什么可以选择的了。</p>
+<p>此外，还有一些诸如小米信号放大器之类使用内嵌8MB内存的MT7688KN SoC的产品由于内存过小，无法刷入Openwrt/LEDE使用。</p>
+<h2 id="为什么不选核心板"><a href="#为什么不选核心板" class="headerlink" title="为什么不选核心板"></a>为什么不选核心板</h2><p>基本上能找到的MT76XX核心板我都看了一下，如下的问题让人头大：</p>
+<ol>
+<li>一些产品配置不够合理</li>
+<li>邮票口不易于使用/插针间距非2.54mm则过小</li>
+<li>提供基础接口的底板价格过高且体型过大</li>
+<li>软件支持基本没有</li>
+<li>品控和售后相当于没有</li>
+<li>面向商用批量订购生产，购买不易</li>
+</ol>
+<p>等差不多原因都使得核心板被排除出了选项。</p>
+<h2 id="可供选择的开发板"><a href="#可供选择的开发板" class="headerlink" title="可供选择的开发板"></a>可供选择的开发板</h2><h3 id="Onion-Omega2-Omega2-Plus"><a href="#Onion-Omega2-Omega2-Plus" class="headerlink" title="Onion Omega2 / Omega2 Plus"></a>Onion Omega2 / Omega2 Plus</h3><p>最初关注Onion Omega是看到的初代。体积小巧但外围接口丰富，使用了AR9331 SoC，64M+16M配置，基本常用的外围接口都预留了。</p>
+<p>而后再翻官网发现价格更低的Omega2也已经发布良久了，采用了MT7688 SoC，64M+16M的配置，价格也只有$5。此外还有一个Omega2 Plus版本采用了128M+32M配置并且额外增加了TF卡槽。特点如下：</p>
+<ul>
+<li><font color="green">系统是LEDE，内核版本4.4，相对比较新</font></li>
+<li><font color="green"> 外围接口丰富</font></li>
+<li><font color="green">开发手册完善，论坛活跃</font>
+</li>
+</ul>
+<ul>
+<li><font color="red">购买渠道不便，邮费远超$5了</font></li>
+<li><font color="red">基本上就是个插针版的核心板，包括供电在内的外围电路需要自行解决</font></li>
+<li><font color="red">在2的基础上这个开发板插针还是2.0mm间距，不便于面包板上使用</font></li>
+<li><font color="red">在2、3的基础上底板价格过于高昂</font>
+
+
+</li>
+</ul>
+<p>有一些使用者<a href="https://community.onion.io/topic/1647/omega2-vs-linkit-smart-7688" target="_blank" rel="external">对比该产品和下述Linkit Smart 7688</a>时指出了Omega2系列的闪存是3K对齐，对于自己编译固件时bootloader的引导是有一定影响的。</p>
+<p>关于SoC的问题我注意到，在市面上使用MT7628的成型产品尚有不少，而MT7688在MT7628的基础上WiFi从2T2R降到了1T1R，很可能是为了极低端的产品和开发板需求而存在的，故而以开发板和核心板存在的形式居多。</p>
+<h3 id="Widora-NEO"><a href="#Widora-NEO" class="headerlink" title="Widora-NEO"></a>Widora-NEO</h3><p>Widora看上去是国内的公司/团队。今天为止的<a href="http://www.widora.io/" target="_blank" rel="external">官网</a>还有些混乱，甚至于大部分还是模板内容就放了出来。</p>
+<p>回到这块开发板上，外围配置很齐全，基本上常用的接口都接好了。MT7688 SoC和128M+16M（新版32M）的配置也是主流水准。</p>
+<ol>
+<li>有淘宝官方店铺，109元人民币+18元运费的价格很合适</li>
+<li>外围接口完整，包含TF卡槽、RJ45网络接口、3.5mm带MIC耳机孔，以及间距为2.54mm的大量GPIO插针</li>
+<li>板载了音频芯片和功放电路，以及CP2104 TTL转换芯片，可以直接通过供电的Micro USB接口进行串口调试</li>
+<li>提供一个OTG接口</li>
+<li>系统基于Openwrt CC，软件方面提供了微信的AirKiss快速配网等功能。</li>
+<li>提供一个在线的<a href="http://wiki.widora.io/index.php?title=%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%E4%B9%8BNEO" target="_blank" rel="external">wiki</a>，还有一个尚算活跃的<a href="http://sns.widora.io/category/2/neo-bit-mt7688" target="_blank" rel="external">中文SNS</a></li>
+</ol>
+<p>除了丑和略大之外，我觉得这块开发板挺实用的。特别是想要作为一个简单的多功能路由器使用时基本上外围配置就已经齐全了，价格也在一个非常合理的范围内。如果要考虑开发和支持，基本上还是依赖于社区贡献，质量看起来并不是那么满意。</p>
+<p>Widora也提供了核心板，同样配置插针版的BIT4价格在￥63。值得注意的是淘宝店铺的<a href="https://item.taobao.com/item.htm?spm=a230r.1.14.8.76bf523FlXohG&amp;id=531871584985&amp;ns=1&amp;abbucket=8#detail" target="_blank" rel="external">该商品页面</a>提供了和下述开发板的对比，可以参考一下。</p>
+<h3 id="Seeedstudio-Linkit-Smart-7688-7688-DUO"><a href="#Seeedstudio-Linkit-Smart-7688-7688-DUO" class="headerlink" title="Seeedstudio Linkit Smart 7688 / 7688 DUO"></a>Seeedstudio Linkit Smart 7688 / 7688 DUO</h3><p>Seeedstudio的背景似乎偏向于国内，至少淘宝上是有专营店的。<del>反观GL.iNet是香港背景但是似乎没什么方便的渠道，颇为可惜</del>首先注意到的是Linkit Smart 7688，造型有点像是加长版的Nodemcu，和Onion Omega2 Plus系列一样采用了MT7688 SoC以及128M+32M的配置。优点罗列如下：</p>
+<ol>
+<li>造型修长小巧，板载电源电路和Micro USB电源接口</li>
+<li>外围丰富，板载就有TF卡槽和OTG接口</li>
+<li>GPIO插针是2.54mm间距，并且插在面包板上两边正好留有各一排孔位方便实验</li>
+<li>得益于MediaTek的官方支持，固件还算稳定且功能丰富，在线和可下载手册也较为完善（但略显凌乱）</li>
+<li>刷新固件看上去很方便（但版本较低）</li>
+<li>价格合适，Seeedstudio淘宝官方店铺售卖109元人民币+10元运费（我购买时还领了10元优惠，相当于包邮）。官方定价也是较低的$12.9。</li>
+</ol>
+<p>这块开发板体型差不多就是Nodemcu拉长一些，扁平的身材很适合在面包板上开发使用。没有像上面Widora-NEO一样直接在开发板上提供现成的RJ45和音频接口等，不过这应该是和体积妥协的结果。虽然官方也提供底板供选择，价格自然就不会很便宜了（$15.95）。最新的固件依然是Openwrt CC，并没有像Omega2一样更新到LEDE。自己编译系统时使用开源的MT76无线网卡驱动，硬件AES支持还需要一番努力。</p>
+<p>值得注意的是，Linkit Smart 7688还有个兄弟版7688 DUO（$15.9;￥119），额外增加了一块Atmega32u4 MCU。这个结构很像Arduino Yún。从<a href="https://labs.mediatek.com/en/platform/linkit-smart-7688" target="_blank" rel="external">对比</a>上可以知道，DUO相比原版提供了更多GPIO，以及分辨率更高的PWM等。实际上大部分GPIO改为由MCU提供，于是相对的，MT7688上引出的外围就少一些了。</p>
+<h3 id="WRTnode"><a href="#WRTnode" class="headerlink" title="WRTnode"></a>WRTnode</h3><p><a href="http://www.wrtnode.cc/old.html" target="_blank" rel="external">WRTnode的产品</a>非常有特色，在于基本上必须搭配底板使用。设计伊始可能是考虑到核心模块可以更换所以采用了这种方式，但是从比较容易买到的开发板实际情况来看，是没有可以共用的情况的。就体积来说，带上底板的WRTnode实际上优势也不大。另外WRTnode虽然有一些官方售卖渠道，但是感觉有些杂乱，并不是每个渠道都有全部产品出售。而且官网的信息给人的感觉是这个团队目前重心偏向于商业方案开发，略有些担心。</p>
+<p>不过有一个优势可能是WRTnode独有的，在我找到的这些开发板中，提到了PCIE接口的应该只有WRTnode2系列。至于是不是用得上就要看具体开发项目了（一般用来外接5G WiFi网卡等）。</p>
+<h3 id="VoCore2"><a href="#VoCore2" class="headerlink" title="VoCore2"></a>VoCore2</h3><p><a href="http://vocore.io/" target="_blank" rel="external">VoCore</a>是个2014年开始的众筹项目。虽然国内没有正式代理，不过官网价格都是全球包邮价。初代使用了RT5350和32M+16M的配置（$14.99），2代改进为MT7628AN和128M+16M的配置（$17.99）。不过本身也是类似于核心板的设计，如果想使用方便的话，的VoCore2 Ultimate（$44.9）才是完整形态。抛开高昂的售价不谈，体积和接口优势看起来是没什么敌手的。不仅如此，使用了2T2R的MT7628AN SoC本身也比MT7688更为优秀。</p>
+<p>不过因为价格远超Raspberry Pi 3B的缘故，就不放在考虑范围内了。</p>
+<h3 id="Microduino"><a href="#Microduino" class="headerlink" title="Microduino"></a>Microduino</h3><p>Microduino团队最初的项目围绕着Atmega单片机的模块化应用展开，提供了大量统一接口堆叠设计、体积小巧的组件供选择。</p>
+<p>淘宝上看到有一些二手的Microduino MT76XX系开发板卖，但是实际上<a href="http://microduinoinc.com/products/modules/" target="_blank" rel="external">官网</a>查了一下没有查到，所以就放弃了。</p>
+<h2 id="最终选择"><a href="#最终选择" class="headerlink" title="最终选择"></a>最终选择</h2><p>我想用路由器/主板/开发板做一个简单的多用途服务器，以及作为IoT的核心部件（比如Homekit的桥）使用。因此无线网络的稳定性基本够用，体积希望可以小巧，能在面包板上使用就更好了;RJ45并不是必需的、音频也不是;但是有可能的话，希望可以有更多的GPIO用于开关、I2C点阵屏、串口通信等。对实时性要求较高的外围接口可以通过外接MCU实现，但MCU并不是必须的。</p>
+<p>手头一些AR9331方案的板子当然可以自己通过串口连接MCU获得更多GPIO、连接USB Hub增加USB口数量等来DIY出成品，然后自己编译固件、增加功能。不过可以一步到位价格又合适的话那又何乐而不为呢。</p>
+<p>因此最后选择了购买Seeedstudio Linkit Smart 7688。巧的是同时在闲鱼上看到有同城50元售卖二手的该开发板，加上运费也就55元，所以就爽快地买了一块用来折腾，提前两天到手的全新开发板则作收藏用～</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>以后应该会更新一些该开发板的使用经验。看能做到什么程度一点一点写。</p>
+
+</div>
+
+
+      </div>
+      
+  	</div>
+
+    <!-- After footer scripts -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+  </body>
+</html>
